@@ -1,0 +1,30 @@
+@startuml
+skinparam backgroundColor #F5F5F5
+skinparam sequence {
+    ActorBorderColor #4CAF50
+    ActorBackgroundColor #C8E6C9
+    ParticipantBorderColor #2196F3
+    ParticipantBackgroundColor #BBDEFB
+    LifeLineBorderColor #4CAF50
+    LifeLineBackgroundColor #C8E6C9
+    ArrowColor #FF5722
+    ArrowThickness 2
+}
+
+actor Usuario as Analista
+participant Sistema
+participant Producto
+participant ListaDePrecios
+participant RegistroDeCambios
+
+Analista -> Sistema: Solicitar generación de lista de precios
+Sistema -> Producto: Consultar productos
+loop Para cada producto
+    Producto -> Producto: Calcular costo promedio
+    Producto -> Producto: Calcular precio sugerido
+end
+Sistema -> ListaDePrecios: Crear nueva lista de precios
+ListaDePrecios -> Sistema: Devolver lista generada
+Sistema -> RegistroDeCambios: Registrar generación de lista
+Sistema -> Analista: Confirmar lista de precios generada
+@enduml

@@ -1,0 +1,59 @@
+@startuml
+skinparam actorStyle awesome
+skinparam RectangleFontStyle Bold
+skinparam RectangleFontSize 12
+skinparam usecase {
+  BackgroundColor LightYellow
+  BorderColor Black
+  FontColor Black
+  RoundCorner 10
+}
+
+' Define los actores en filas separadas
+left to right direction
+actor Analista as "Analista de Precios"
+actor Encargado as "Encargado de Sucursal"
+actor Admin as "Administrador del Sistema"
+
+' Módulo principal que agrupa todos los casos de uso
+rectangle "Sistema de Gestión de Precios MiSalud" {
+
+  package "Gestión de Precios" {
+    usecase UC1 as "Crear y Generar Lista de Precios"
+    usecase UC2 as "Aplicar Políticas de Margen y Redondeo"
+  }
+
+  package "Consultas y Descuentos" {
+    usecase UC5 as "Consultar y Comparar Listas Históricas"
+    usecase UC6 as "Aplicar Descuento Especial en Sucursal"
+    usecase UC7 as "Ver Precios Vigentes"
+    usecase UC8 as "Consultar Estatus de Margen por Producto"
+  }
+
+  package "Control y Auditoría" {
+    usecase UC3 as "Control de Acceso y Autenticación"
+    usecase UC4 as "Registrar y Monitorear Cambios"
+    usecase UC9 as "Control de Acceso y Permisos"
+    usecase UC10 as "Monitorear Cambios de Configuración"
+    usecase UC11 as "Auditoría y Registro de Actividades"
+  }
+}
+
+' Define las conexiones desde los actores hacia los casos de uso
+Analista --> UC1
+Analista --> UC2
+Analista --> UC3
+Analista --> UC4
+Analista --> UC5
+  
+Encargado --> UC6
+Encargado --> UC7
+Encargado --> UC8
+  
+Admin --> UC3
+Admin --> UC4
+Admin --> UC9
+Admin --> UC10
+Admin --> UC11
+
+@enduml

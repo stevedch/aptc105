@@ -1,0 +1,63 @@
+@startuml
+class Producto {
+    - codigoProducto: String
+    - descripcion: String
+    - costoPromedio: Double
+    - precioActual: Double
+    - precioSugerido: Double
+    - margen: Double
+    - categoria: String
+    --
+    + calcularCostoPromedio(): Double
+    + calcularPrecioSugerido(): Double
+    + aplicarRedondeo(): void
+}
+
+class ListaDePrecios {
+    - idLista: String
+    - fechaGeneracion: Date
+    - productos: Producto[]
+    --
+    + generarLista(): void
+    + almacenarListaHistórica(): void
+}
+
+class Usuario {
+    - idUsuario: String
+    - nombre: String
+    - rol: String
+    --
+    + autenticar(): Boolean
+    + verificarPermisos(): Boolean
+}
+
+class RegistroDeCambios {
+    - idRegistro: String
+    - fechaCambio: Date
+    - usuario: Usuario
+    - descripcionCambio: String
+    --
+    + registrarCambio(): void
+    + consultarHistorial(): List
+}
+
+class Descuento {
+    - tipoDescuento: String
+    - valorDescuento: Double
+    - fechaInicio: Date
+    - fechaFin: Date
+}
+
+class HistorialDePrecios {
+    - idHistorial: String
+    - precioAntiguo: Double
+    - precioNuevo: Double
+    - fechaCambio: Date
+}
+
+ListaDePrecios o-- Producto : contiene >
+Producto "0..*" --o HistorialDePrecios : guarda >
+Producto "0..1" --> Descuento : tiene >
+RegistroDeCambios --> Usuario : "realizado por"
+ListaDePrecios --> RegistroDeCambios : "registra"
+@enduml
