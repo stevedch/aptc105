@@ -20,6 +20,7 @@ class ListaDePrecios {
     --
     + generarLista(): void
     + almacenarListaHistórica(): void
+    + notificarCambios(): void
 }
 
 class Usuario {
@@ -46,6 +47,9 @@ class Descuento {
     - valorDescuento: Double
     - fechaInicio: Date
     - fechaFin: Date
+    --
+    + esValido(): Boolean
+    + calcularDescuento(Double precio): Double
 }
 
 class HistorialDePrecios {
@@ -53,11 +57,14 @@ class HistorialDePrecios {
     - precioAntiguo: Double
     - precioNuevo: Double
     - fechaCambio: Date
+    --
+    + consultarPorProducto(String codigoProducto): List
 }
 
-ListaDePrecios o-- Producto : contiene >
-Producto "0..*" --o HistorialDePrecios : guarda >
-Producto "0..1" --> Descuento : tiene >
+ListaDePrecios o-- Producto : "contiene 1..*"
+Producto "0..*" --o HistorialDePrecios : "guarda cambios"
+Producto "0..1" --> Descuento : "tiene"
 RegistroDeCambios --> Usuario : "realizado por"
 ListaDePrecios --> RegistroDeCambios : "registra"
+ListaDePrecios --> RegistroDeCambios : "notifica"
 @enduml

@@ -1,0 +1,20 @@
+@startuml
+actor Usuario as Analista
+actor Encargado as EncargadoSucursal
+
+Analista -> ControlAcceso : Autenticar usuario
+ControlAcceso -> Usuario : Validación exitosa
+Analista -> GestorPrecios : Solicitar generación de lista
+GestorPrecios -> BaseDeDatos : Obtener productos
+GestorPrecios -> Producto : Calcular precio
+GestorPrecios -> ListaDePrecios : Guardar lista generada
+GestorPrecios -> RegistroDeCambios : Registrar actividad
+Usuario <- GestorPrecios : Confirmar lista generada
+
+Encargado -> ControlAcceso : Autenticar usuario
+ControlAcceso -> Encargado : Validación exitosa
+Encargado -> GestorDescuentos : Solicitar aplicar descuento
+GestorDescuentos -> BaseDeDatos : Validar producto y descuento
+GestorDescuentos -> RegistroDeCambios : Registrar actividad
+Encargado <- GestorDescuentos : Confirmar descuento aplicado
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+package "Interfaz de Usuario" {
+    [Frontend] --> [Backend API] : Solicitudes de Usuario
+}
+
+package "Backend" {
+    [Backend API] --> [Gestor de Precios] : Solicitar cálculos de precios
+    [Backend API] --> [Gestor de Descuentos] : Aplicar descuentos
+    [Backend API] --> [Control de Acceso] : Validar autenticación
+    [Backend API] --> [Registro de Cambios] : Registrar modificaciones
+
+    [Gestor de Precios] --> [Base de Datos] : Consultar y actualizar precios
+    [Gestor de Descuentos] --> [Base de Datos] : Consultar descuentos activos
+    [Registro de Cambios] --> [Base de Datos] : Guardar registro de cambios
+    [Control de Acceso] --> [Base de Datos] : Validar usuarios
+}
+
+node "Base de Datos" {
+    [Productos]
+    [Usuarios]
+    [Historial de Cambios]
+    [Listas de Precios]
+}
+
+note bottom of [Productos]
+    Datos de los productos, incluyendo costos y márgenes
+end note
+
+note bottom of [Usuarios]
+    Información de los usuarios, roles y permisos
+end note
+
+note bottom of [Historial de Cambios]
+    Registros de modificaciones realizadas en listas y productos
+end note
+
+note bottom of [Listas de Precios]
+    Datos de listas generadas para cada periodo
+end note
+@enduml

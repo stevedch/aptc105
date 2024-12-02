@@ -12,11 +12,14 @@ skinparam sequence {
 }
 
 actor Usuario as Analista
+participant "ControlAcceso" as Control
 participant Sistema
 participant Producto
 participant ListaDePrecios
 participant RegistroDeCambios
 
+Analista -> Control: Validar autenticación
+Control -> Analista: Autenticación válida
 Analista -> Sistema: Solicitar generación de lista de precios
 Sistema -> Producto: Consultar productos
 loop Para cada producto

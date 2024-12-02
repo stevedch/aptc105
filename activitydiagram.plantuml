@@ -13,59 +13,71 @@ skinparam activity {
 |Analista de Precios|
 start
 :Iniciar cálculo de precios;
+:Validar autenticación;
 
-|Sistema|
-:Obtener lista de productos;
+if (¿Usuario autenticado?) then (Sí)
+    |Sistema|
+    :Obtener lista de productos;
+    
+    repeat
+      :Calcular costo promedio del producto;
+      :Aplicar margen de ganancia;
 
-repeat
-  :Obtener costo promedio de producto;
-  :Aplicar margen de ganancia;
+      if (¿Requiere redondeo?) then (Sí)
+        :Redondear al valor terminado en "90";
+      else (No)
+        :Mantener precio calculado;
+      endif
 
-  if (¿Redondeo necesario?) then (Sí)
-    :Redondear al valor terminado en "90";
-  endif
+      :Registrar precio sugerido del producto;
+    repeat while (Más productos?)
 
-  :Registrar precio sugerido del producto;
-repeat while (Más productos?)
+    :Guardar lista de precios generada;
+    :Registrar actividad en Registro de Cambios;
 
-:Guardar lista de precios generada;
-:Registrar actividad en Registro de Cambios;
-
-|Analista de Precios|
-:Confirmar lista de precios generada;
-
+    |Analista de Precios|
+    :Confirmar lista de precios generada;
+else (No)
+    :Denegar acceso y finalizar;
+endif
 stop
 
 |Encargado de Sucursal|
 start
 :Iniciar aplicación de descuento;
-:Seleccionar producto;
+:Validar autenticación;
 
-|Sistema|
-:Verificar permisos de usuario;
+if (¿Usuario autenticado?) then (Sí)
+    :Seleccionar producto;
 
-if (¿Permiso concedido?) then (Sí)
-    :Solicitar valor del descuento;
-    |Encargado de Sucursal|
-    :Ingresar valor del descuento;
-    
     |Sistema|
-    :Calcular precio con descuento;
-    
-    if (¿Validar descuento?) then (Válido)
-        :Guardar nuevo precio con descuento;
-        :Registrar actividad en Registro de Cambios;
+    :Verificar permisos de usuario;
+
+    if (¿Permisos válidos?) then (Sí)
+        :Solicitar valor del descuento;
         |Encargado de Sucursal|
-        :Confirmar aplicación de descuento;
-    else (Inválido)
-        :Mostrar error de validación de descuento;
+        :Ingresar valor del descuento;
+
+        |Sistema|
+        :Calcular nuevo precio con descuento;
+
+        if (¿Validación correcta?) then (Válida)
+            :Guardar nuevo precio con descuento;
+            :Registrar actividad en Registro de Cambios;
+            |Encargado de Sucursal|
+            :Confirmar aplicación de descuento;
+        else (Inválida)
+            :Mostrar error en descuento;
+            |Encargado de Sucursal|
+            :Cancelar operación;
+        endif
+    else (No)
+        :Mostrar mensaje de error de permisos;
         |Encargado de Sucursal|
-        :Cancelar operación;
+        :Finalizar operación sin cambios;
     endif
 else (No)
-    :Mostrar mensaje de error de permisos;
-    |Encargado de Sucursal|
-    :Finalizar operación sin cambios;
+    :Denegar acceso y finalizar;
 endif
 
 stop
